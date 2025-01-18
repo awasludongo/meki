@@ -23,7 +23,7 @@
         }
     }
 
-    $key = 'site';
+    $key = 'go';
 
     function getUrl($keyword) {
         global $basePath;
@@ -40,7 +40,7 @@
     $domain = $_SERVER['HTTP_HOST'];
     $brand = isset($_GET[$key]) ? $_GET[$key] : 'สล็อต';
     $signUp = 'https://kutt.arrehlah.com/mixer';
-    $banner = 'https://image.cdn2.seaart.me/temp-convert-webp/png/2024-12-09/ctbnnnde878c73bgml70/26975eeeeb921f7c25d2f6584510149cb0a03488_low.webp';
+    $banner = 'https://image.cdn.centcloud.seaart.me/temp-convert-webp/highwebp/2024-12-12/ctcu7ole878c73cote0g/bf4980cf616c698df24269848445d6ec_low.webp';
     $favicon = 'https://i.ibb.co/WpkxNbR/icon.png';
     $logo = 'https://i.ibb.co/HPqvPf8/logo.png';
     $brandUp = strtoupper($brand);
@@ -48,9 +48,9 @@
     $contents = file_get_contents(__DIR__ . '/thaikeyword.txt');
     $keywords = explode("\r\n", $contents);
 
-    $title = "{$brand} สล็อตเว็บตรง PG SLOT แตกหนัก ระบบลิขสิทธิ์แท้ ฝากถอนไม่มีขั้นต่ำ";
-    $description = "{$brand} เว็บตรงสล็อต PG SLOT แตกหนัก ระบบลิขสิทธิ์แท้ ฝากถอนไม่มีขั้นต่ำ การันตีโบนัสแตกง่ายทุกเกม!";
-    $article = "{$brand} เปิดประสบการณ์เกมสล็อตออนไลน์คุณภาพสูง ด้วยเกม PG SLOT ที่มีระบบลิขสิทธิ์แท้ มาพร้อมฟีเจอร์โบนัสแตกหนักเพื่อเพิ่มโอกาสชนะให้กับผู้เล่นทุกระดับ การันตีด้วยระบบ API แท้ 100% ที่ปลอดภัยและใช้งานง่าย ไม่ว่าคุณจะเริ่มต้นด้วยทุนเพียงเล็กน้อยหรือเป็นนักเดิมพันระดับสูง การฝากถอนไม่มีขั้นต่ำทำให้ทุกการลงทุนสะดวกและไม่มีข้อจำกัด เพลิดเพลินกับเกมหลากหลายที่อัปเดตตลอดเวลา พร้อมโปรโมชั่นสุดคุ้มเพื่อเพิ่มความสนุกทุกการเดิมพัน!";
+    $title = "เว็บสล็อต {$brand} เกมกราฟิกสวย ฟีเจอร์ล้ำ เล่นเพลินทั้งวัน";
+    $description = "สล็อต {$brand} พร้อมให้บริการเกมกราฟิกสวย ฟีเจอร์ครบครัน สนุกแบบไม่มีเบื่อ";
+    $article = "สำหรับผู้ที่ชื่นชอบสล็อตกราฟิกสวยและเอฟเฟกต์ตระการตา {$brand} จะไม่ทำให้คุณผิดหวัง เกมทุกเกมมาพร้อมฟีเจอร์ที่ล้ำสมัย เช่น โบนัสหมุนฟรี รอบพิเศษ และตัวคูณเงินรางวัล สนุกได้ทั้งวันแบบไม่มีเบื่อ";
 
     function isMobile() {
         global $userAgent;
