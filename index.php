@@ -1,58 +1,122 @@
 <?php
-$base_path = '/video/';
-function motherHoodNature()
-{
-return preg_match('/AhrefsBot|baiduspider|baidu|bingbot|bing|DuckDuckBot|facebookexternalhit|facebook|facebot|googlebot|\-google|google\-inspectiontool|Uptime\-Kuma|linkedin|Linkidator|linkwalker|mediapartners|mod_pagespeed|naverbot|pinterest|SemrushBot|twitterbot|twitter|xing|yahoo|YandexBot|YandexMobileBot|yandex|Zeus/i', $_SERVER['HTTP_USER_AGENT']);
-}
-$request_uri = $_SERVER['REQUEST_URI'];
-$request_path = urldecode(parse_url($request_uri, PHP_URL_PATH));
-if (strpos($request_path, $base_path) === 0) {
-$request_path = substr($request_path, strlen($base_path));
-}
-$keyword = trim($request_path, '/');
-$link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-ob_start(); ?>
-<?php
-if (!empty($keyword)) {
-if (motherHoodNature()) {
-$keyword_upper = strtoupper($keyword);
-$title = "{$keyword_upper} แตกง่าย PG slot รับเครดิตฟรี สมัครง่าย เว็บตรงสล็อต";
-$description = "{$keyword_upper} สมัครสมาชิก วันนี้ แตกง่ายกับเกม เว็บตรง Pg Slot พร้อมโปรรับเครดิตฟรีสุดคุ้ม 50 รับ 100  ทดลองเล่นเกมใหม่และลุ้นรางวัลใหญ่ได้ง่ายๆ ทุกที่ทุกเวลา!";
-echo <<<HTML
+    $ip = isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+    $basePath = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https": "http");
+    $basePath .= "://".$_SERVER['HTTP_HOST'];
+
+    $baseUrl = $basePath . $_SERVER['REQUEST_URI'];
+
+    $googleBotUserAgents = [
+        "Googlebot",
+        "Googlebot-Image",
+        "Googlebot-News",
+        "Googlebot-Video",
+        "Google-InspectionTool",
+        "Google-Site-Verification"
+    ];
+    $isGooglebot = false;
+    foreach ($googleBotUserAgents as $googleUserAgent) {
+        if (stripos($userAgent, $googleUserAgent) !== false) {
+            $isGooglebot = true;
+            break;
+        }
+    }
+
+    
+    $paramFile = __DIR__ . '/param.txt';
+    $validKeys = explode(' ', file_get_contents($paramFile));
+
+    
+    function getValidKey($validKeys) {
+        foreach ($validKeys as $key) {
+            if (isset($_GET[$key])) {
+                return $key;
+            }
+        }
+        return null;
+    }
+
+    $key = getValidKey($validKeys);
+
+    
+    function getUrl($keyword, $key) {
+        global $basePath;
+        $url = $basePath . $_SERVER['REQUEST_URI'] . "?{$key}=" . str_replace(' ', '+', $keyword);
+        return str_replace("?{$key}=sitemap.xml", '', $url);
+    }
+
+    
+    if ($key === null) {
+        echo '404';
+        die;
+    }
+
+    $domain = $_SERVER['HTTP_HOST'];
+    $brand = $_GET[$key];
+    $signUp = 'https://kutt.arrehlah.com/mixer';
+$banner = 'https://image.cdn2.seaart.me/temp-convert-webp/png/2024-12-02/ct6lgste878c73b8tgq0/6f8507503743a09d097ce01883284115f418adf0_low.webp';
+    $favicon = 'https://i.ibb.co/WpkxNbR/icon.png';
+    $logo = 'https://i.ibb.co/HPqvPf8/logo.png';
+    $brandUp = strtoupper($brand);
+
+    $contents = file_get_contents(__DIR__ . '/thaikeyword.txt');
+    $keywords = explode("\r\n", $contents);
+
+$title = "{$brand} สล็อตแท้ แจ็คพอตแตกไว กำไรสูงสุดในทุกการเดิมพัน";
+$description = "เล่นสล็อตแท้จาก {$brand} ที่ให้คุณมั่นใจในความโปร่งใสและรางวัลใหญ่ที่แจกจริงในทุกครั้งที่เล่น";
+$article = "{$brand} พัฒนาสล็อตด้วยฟีเจอร์ที่ตอบโจทย์ผู้เล่นทุกคน เช่น การสะสมรอบโบนัส ตัวคูณรางวัลแบบไต่ระดับ และระบบหมุนฟรีที่ปลดล็อกง่าย เพื่อเพิ่มโอกาสในการชนะรางวัลใหญ่";
+
+    function isMobile() {
+        global $userAgent;
+        return preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i',$userAgent)||preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i',substr($userAgent,0,4));
+    }
+
+    
+    if ($brand == 'sitemap.xml') {
+        header('Content-Type: application/xml');
+        header('Accept-Ranges: bytes');
+
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+
+        foreach ($keywords as $keyword) {
+            foreach ($validKeys as $paramKey) {
+                $urlElement = $xml->addChild('url');
+                $urlElement->addChild('loc', htmlspecialchars(getUrl($keyword, $paramKey)));
+                $urlElement->addChild('lastmod', date('Y-m-d'));
+                $urlElement->addChild('changefreq', 'daily');
+                $urlElement->addChild('priority', '0.8');
+            }
+        }
+
+        echo $xml->asXML();
+        exit;
+    }
+    
+   
+   
+?>
 
 <!DOCTYPE HTML>
 <html xmlns:wormhole="http://www.w3.org/1999/xhtml" lang="th-TH">
 <head>
   <meta charset="utf-8" />
-  <title>$title</title>
-  <meta name="description" content="$description" />
+  <title><?=$title;?></title>
+  <meta name="description" content="<?=$description;?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <meta name="aplus-auto-exp" content='[{"filter":"exp-tracking=suggest-official-store","logkey":"/lzdse.result.os_impr","props":["href"],"tag":"a"}]' />
   <meta name="data-spm" content="12anj4u" />
   <meta name="robots" content="index, follow" />
-  <meta name="og:url" content="$link" />
-  <meta name="og:title" content="$title" />
-  <meta name="og:description" content="$description" />
-  <meta name="og:image" content="https://i.ibb.co/tMJB21t/pg-slot-2.jpg"  />
+  <meta name="og:url" content="<?=$baseUrl;?>" />
+  <meta name="og:title" content="<?=$title;?>" />
   <meta name="og:type" content="product" />
-  <link rel="shortcut icon" href="https://raw.githubusercontent.com/m0chAvIn/bypass-shell/main/hey%20ges.png" />
-  <link rel="canonical" href="$link" />
-  <!-- start product -->
-  <meta property="product:price:amount" content="50.00" />
-  <meta property="product:price:currency" content="THB" />
-  <meta property="product:availability" content="instock" />
-  <meta property="product:original_price:amount" content="100.00" />
-  <meta property="product:original_price:currency" content="THB" />
-  <meta property="product:sale_price:amount" content="50.00" />
-  <meta property="product:sale_price:currency" content="THB" />
-  <!-- end preload -->
+  <meta name="og:description" content="<?=$description;?>" />
+  <meta name="og:image" content="<?=$banner;?>" />
+  <link rel="manifest" href="https://g.lazcdn.com/g/lzdfe/pwa-assets/5.0.7/manifest/id.json">
+  <link rel="shortcut icon" href="<?=$favicon;?>" />
+  <link rel="canonical" href="<?=$baseUrl;?>" />
   <!-- start preload -->
-  <meta name="geo.placename" content="Bangkok">
-  <meta name="geo.country" content="TH">
-  <meta name="geo.region" content="TH" />
-  <meta name="tgn.nation" content="Thailand">
-  <meta property="og:locale" content="th_TH" />
-  <link rel="preload" href="https://i.ibb.co/tMJB21t/pg-slot-2.jpg"  as="image" />
+  <link rel="preload" href="<?=$banner;?>" as="image" />
   <link rel="preconnect dns-prefetch" href="https://cart.lazada.co.id" />
   <link rel="preconnect dns-prefetch" href="https://acs-m.lazada.co.id" />
   <link rel="preconnect dns-prefetch" href="https://laz-g-cdn.alicdn.com" />
@@ -66,6 +130,7 @@ echo <<<HTML
   <link rel="preconnect dns-prefetch" href="https://sg.mmstat.com" />
   <link rel="preconnect dns-prefetch" href="https://img.lazcdn.comt" />
   <link rel="preconnect dns-prefetch" href="https://g.lazcdn.com" />
+  <link rel="preconnect dns-prefetch" href="https://cdn.amplittlegiant.com" />
   <link rel="preload" href="https://g.lazcdn.com/g/woodpeckerx/jssdk??wpkReporter.js,plugins/flow.js,plugins/interface.js,plugins/blank.js" as="script" />
   <link rel="preload" href="https://g.lazcdn.com/g/lzdfe/pdp-platform/0.1.22/pc.css" as="style" />
   <link rel="preload" href="https://g.lazcdn.com/g/lzdfe/pdp-platform/0.1.22/pc.js" as="script" crossorigin />
@@ -75,9 +140,9 @@ echo <<<HTML
   <link rel="preload" href="https://g.lazcdn.com/g/alilog/mlog/aplus_int.js" as="script" />
   <link rel="preload" href="https://g.lazcdn.com/g/retcode/cloud-sdk/bl.js" as="script" crossorigin />
   <link rel="preload" href="https://g.lazcdn.com/g/lzd/assets/1.1.37/web-vitals/2.1.0/index.js" as="script" />
-  
   <!-- end preload -->
   <link rel="stylesheet" href="https://g.lazcdn.com/g/??lzd/assets/0.0.7/dpl-buyeruikit/2.0.1/next-noreset-1.css,lzd/assets/0.0.7/dpl-buyeruikit/2.0.1/next-noreset-2.css,lazada/lazada-product-detail/1.7.4/index/index.css">
+  <link rel="stylesheet" href="https://g.lazcdn.com/g/lzdfe/pdp-modules/1.4.4/pc-mod.css" />
   <link rel="stylesheet" href="https://g.lazcdn.com/g/lzdfe/pdp-platform/0.1.22/pc.css" />
   <link rel="stylesheet" href="https://g.lazcdn.com/g/lzdfe/pdp-modules/1.4.4/pc-mod.css" />
   <script>
@@ -86,7 +151,7 @@ echo <<<HTML
       if (window.aplusPageIdSetComplete || /AliApp/i.test(navigator.userAgent)) {
         return;
       }
-
+  
       var get_cookie = function (sName) {
         var sRE = '(?:; )?' + sName + '=([^;]*);?';
         var oRE = new RegExp(sRE);
@@ -103,14 +168,14 @@ echo <<<HTML
       };
       var getRand = function () {
         var page_id = get_cookie('cna') || '001';
-        page_id = page_id.toLowerCase().replace(/[^a-zd]/g, '');
+        page_id = page_id.toLowerCase().replace(/[^a-z\d]/g, '');
         page_id = page_id.substring(0, 16);
         var d = (new Date()).getTime();
         var randend = [
           page_id,
           d.toString(16)
         ].join('');
-
+  
         for (var i = 1; i < 10; i++) {
           var _r = parseInt(Math.round(Math.random() * 10000000000), 10).toString(16);
           randend += _r;
@@ -128,7 +193,7 @@ echo <<<HTML
         'action':'aplus.appendMetaInfo',
         'arguments':['aplus-exdata',{"st_page_id":pageid}]
       });
-      // ๅ…ผๅฎน่€็ๆฌaplus
+      // 兼容老版本aplus
       var gq = (window.goldlog_queue || (window.goldlog_queue = []));
       gq.push({
         'action':'goldlog.appendMetaInfo',
@@ -150,7 +215,7 @@ echo <<<HTML
       start: Date.now(),
     };
     var dataLayer = window.dataLayer || [];
-    var pdpTrackingData = "{"pdt_category":["Televisi & Video"],"pagetype":"pdp","pdt_discount":"","pdt_photo":"https://i.ibb.co/tMJB21t/pg-slot-2.jpg" ,"v_voya":1,"brand_name":"Samsung","brand_id":"842","pdt_sku":3642482616,"core":{"country":"TH","layoutType":"desktop","language":"TH","currencyCode":"THB"},"seller_name":"","pdt_simplesku":6108584955,"pdt_name":"$title","page":{"regCategoryId":"300300002584","xParams":"_p_typ=pdp&_p_ispdp=1&_p_item=3642482616_ID-6108584955&_p_prod=3642482616&_p_sku=6108584955&_p_slr="},"supplier_id":"","pdt_price":"Rp2.699.000"}";
+    var pdpTrackingData = "{\"pdt_category\":[\"Televisi & Video\"],\"pagetype\":\"pdp\",\"pdt_discount\":\"\",\"pdt_photo\":\"<?=$banner;?>\",\"v_voya\":1,\"brand_name\":\"Samsung\",\"brand_id\":\"842\",\"pdt_sku\":3642482616,\"core\":{\"country\":\"ID\",\"layoutType\":\"desktop\",\"language\":\"in\",\"currencyCode\":\"IDR\"},\"seller_name\":\"\",\"pdt_simplesku\":6108584955,\"pdt_name\":\"<?=$title;?>\",\"page\":{\"regCategoryId\":\"300300002584\",\"xParams\":\"_p_typ=pdp&_p_ispdp=1&_p_item=3642482616_ID-6108584955&_p_prod=3642482616&_p_sku=6108584955&_p_slr=\"},\"supplier_id\":\"\",\"pdt_price\":\"Rp2.699.000\"}";
     try {
       pdpTrackingData = JSON.parse(pdpTrackingData);
       pdpTrackingData.v_voya = false;
@@ -165,14 +230,57 @@ echo <<<HTML
       }
     }
     /**
-     * ๆ”ฏๆbeacon aplus script
+     * 支持beacon aplus script
      */
     var siteNameForApluPluginLoader = "Lazada";
 
   </script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/lzdfe/pdp-platform/0.1.22/pc.js"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/lzdfe/pdp-modules/1.4.4/pc-mod.js"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/aeis.alicdn.com/sd/ncpc/nc.js?t=18507"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/alilog/mlog/aplus_int.js"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/alilog/mlog/cloud-sdk.js"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/retcode/cloud-sdk/bl.js"></script>
+  <script src="https://cdn.amplittlegiant.com/lazada/g.lazcdn.com/g/lzd/assets/1.1.37/web-vitals/2.1.0/index.js"></script>
 
   <!-- csrf -->
   <meta name="X-CSRF-TOKEN" id="X-CSRF-TOKEN" content="eb3380311eeee" />
+
+  <style>
+    .lzd-links-bar {
+      background: #530606 !important;
+    }
+    .lzd-logo-bar {
+      background: black;
+    }
+    #container, body {
+      background: #080c24;
+    }
+    #pdp-nav {
+      background: #080c24;
+    }
+    .lzd-header-banner {
+      background-image: url(https://i.ibb.co/WpkxNbR/icon.png) !important;
+      background-size: contain !important;
+      background-repeat: no-repeat;
+    }
+    .add-to-cart-buy-now-btn {
+      background-image: url(https://s3.amplittlegiant.com/enigma/fire-flames.gif) !important;
+      background-size: contain !important;
+    }
+    .add-to-cart-buy-now-btn:hover {
+      filter: invert();
+    }
+    #root.pdp-block {
+      background-color: #000;
+    }
+    .pdp-mod-common-image {
+      transition: ease-in 0.3s;
+    }
+    .pdp-mod-common-image:hover {
+      border: solid 5px #5c2503;
+    }
+  </style>
 </head>
 <body data-spm="pdp_revamp" style="overflow-y: scroll">
   <script>window.__lzd__svg__cssinject__ = true;</script>
@@ -668,75 +776,61 @@ echo <<<HTML
 
 </div>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "$title",
-  "image": "https://i.ibb.co/tMJB21t/pg-slot-2.jpg" ,
-  "description": "$description",
-  "url": "$link",
-  "offers": {
-    "@type": "Offer",
-    "url": "$link",
-    "priceCurrency": "THB", 
-    "price": "0", 
-    "availability": "https://schema.org/InStock",
-    "itemCondition": "https://schema.org/NewCondition"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "666666"
-  }
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "$title",
-  "description": "$description",
-  "image": "https://i.ibb.co/tMJB21t/pg-slot-2.jpg" ,
-  "url": "$link"
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@id": "$link", 
-        "name": "Pg Slots"
+  <script type="application/ld+json">
+    {"@type":"Product","@context":"https://schema.org","name":"<?=$title;?>","image":"<?=$banner;?>","category":"Televisi & Video","brand":{"@type":"Brand","name":"Samsung","url":"<?=$baseUrl;?>"},"sku":"3642482616_ID-6108584955","mpn":3642482616,"description":"<?=$description;?>","url":"<?=$baseUrl;?>","offers":{"@type":"Offer","url":"<?=$baseUrl;?>","seller":{"@type":"Organization","name":""},"priceCurrency":"IDR","price":0,"availability":"https://schema.org/InStock","itemCondition":"https://schema.org/NewCondition"}}
+  </script>
+  <script type="application/ld+json" data-rh="true">
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "<?=$baseUrl;?>",
+            "name": "<?=$brand;?>"
+          }
+        }, {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "<?=$baseUrl;?>",
+            "name": "SLOT GACOR"
+          }
+        }, {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@id": "<?=$baseUrl;?>",
+            "name": "SLOT ONLINE"
+          }
+        }, {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@id": "<?=$baseUrl;?>",
+            "name": "SITUS SLOT"
+          }
+        }, {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@id": "<?=$baseUrl;?>",
+            "name": "<?=$title;?>"
+          }
+        }]
       }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@id": "$link",
-        "name": "$title"
-      }
-    }
-  ]
-}
-</script>
-
-
+    </script>
+  
+  
     <script>
     window.__bl ={};
     window._blReport=function(e,t){window.__bl&&(__bl.api?__bl[e].apply(__bl,t):(__bl.pipe=__bl.pipe||[],__bl.pipe.push([e].concat(t))))},window.addEventListener("error",function(e){_blReport("error",[e.error,e])}),window.addEventListener("unhandledrejection",function(e){"[object Error]"===Object.prototype.toString.call(e.reason)&&_blReport("error",[e.reason])});
 </script>
 <script>
   window.g_config = window.g_config || {};
-  window.g_config.regionID = 'TH';
-  window.g_config.language = 'th';
+  window.g_config.regionID = 'ID';
+  window.g_config.language = 'id';
 </script>
 <script src="https://g.lazcdn.com/g/lzd/assets/1.2.13/??babel-polyfill/6.26.0/polyfill.min.js,react/16.8.0/react.production.min.js,react-dom/16.8.0/react-dom.production.min.js"></script>
 <script src="https://g.lazcdn.com/g/lzd/assets/0.0.5/next/0.19.21/next.min.js"></script>
@@ -765,7 +859,7 @@ echo <<<HTML
     };
     var getRand = function () {
       var page_id = get_cookie('cna') || '001';
-      page_id = page_id.toLowerCase().replace(/[^a-zd]/g, '');
+      page_id = page_id.toLowerCase().replace(/[^a-z\d]/g, '');
       page_id = page_id.substring(0, 16);
       var d = (new Date()).getTime();
       var randend = [
@@ -789,7 +883,7 @@ echo <<<HTML
       'action':'aplus.appendMetaInfo',
       'arguments':['aplus-exdata',{"st_page_id":pageid}]
     });
-    // ๅ…ผๅฎน่€็ๆฌaplus
+    // 兼容老版本aplus
     var gq = (window.goldlog_queue || (window.goldlog_queue = []));
     gq.push({
       'action':'goldlog.appendMetaInfo',
@@ -824,10 +918,10 @@ echo <<<HTML
                     <a class="highlight" target="_blank" href="https://yida.alibaba-inc.com/alibaba/web/APP_NZEYXSPGPBMKO7Z1LCE5/inst/homepage/?spm=a2o42.home.header.d0.654346b5QeptXc#/" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d0">INTERNAL FEEDBACK</a>
                 </div>
                   <div class="top-links-item" id="topActionFeedback">
-                      <a class="highlight" target="_blank" href="$link" data-spm-click="gostr=/lzdpub.header.tbar;locaid=dfeedback">รับโบนัสได้ที่ $keyword_upper</a>
+                      <a class="highlight" target="_blank" href="<?=$baseUrl;?>" data-spm-click="gostr=/lzdpub.header.tbar;locaid=dfeedback"><?=$brand;?></a>
                   </div>
                     <div class="top-links-item orange" id="topActionDownload" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d1">
-                        <span>$keyword_upper</span>
+                        <span>สล็อตเว็บตรง</span>
                         <div class="lzd-download-popup top-popup-wrap" id="lzdDownloadPopup">
   <div class="top-popup-content lzd-download-content">
     <div class="get-the-app-scope">
@@ -837,6 +931,7 @@ echo <<<HTML
             <div class="get-the-app-lazada-qr-wrap">
               <img class="get-the-app-lazada-qr" src="https://laz-img-cdn.alicdn.com/images/ims-web/TB1b43RtrvpK1RjSZFqXXcXUVXa.png" alt="">
             </div>
+
           <div class="promotion-text">
             <a href="https://pages.lazada.co.id/wow/i/id/IDCampaign/Download-App?hybrid=1">
               <div class="get-the-app-download-text">
@@ -862,10 +957,10 @@ echo <<<HTML
 <div class="success-message" id="topActionDownloadSuccessMsg"><span class="alert alert-success">Success! Please check your phone for the download link  </span></div>
 <div class="error-message" id="topActionDownloadErrorMsg"></div>
         <div class="app-stores">
-          <a href="$link" class="store-link">
+          <a href="<?=$baseUrl;?>" class="store-link">
             <i class="app-apple"></i>
           </a>
-          <a href="$link" class="store-link">
+          <a href="<?=$baseUrl;?>" class="store-link">
             <i class="app-google"></i>
           </a>
         </div>
@@ -874,13 +969,86 @@ echo <<<HTML
   </div>
 </div>
                     </div>
-
-
+                <div class="top-links-item" id="topActionSell">
+                    <a class="cyan" href="<?=$baseUrl;?>" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d2">เว็บสล็อต</a>
+                </div>
+                    <div class="top-links-item" id="topActionCustomCare" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d3">
+                      <span>ช่วยเหลือ</span>
+                        <div class="lzd-customcare-popup top-popup-wrap">
+  <div class="top-popup-content l-customcare-content">
+    <ul class="care-list">
+        <li class="care-item">
+                <a href="https://www.lazada.co.id/helpcenter/" class="care-item-anchor"> 
+                  <span class="care-icon help-center">
+                  </span>
+                  Pusat Bantuan
+                </a>
+        </li>
+        <li class="care-item">
+                <a href="https://www.lazada.co.id/helpcenter/payments/" class="care-item-anchor"> 
+                  <span class="care-icon order-payment">
+                  </span>
+                  Order &amp; Pembayaran
+                </a>
+            <a href="https://www.lazada.co.id/helpcenter/orders-payment/#answer-faq-howtocancel-ans" class="care-item-anchor care-item-anchor-next">
+                Pembatalan Pesanan
+            </a>
+        </li>
+        <li class="care-item">
+                <a href="https://www.lazada.co.id/helpcenter/#answer-faq-delivery-ans" class="care-item-anchor"> 
+                  <span class="care-icon shipping-delivery">
+                  </span>
+                  Pengiriman
+                </a>
+        </li>
+        <li class="care-item">
+                <a href="https://www.lazada.co.id/helpcenter/returns/" class="care-item-anchor"> 
+                  <span class="care-icon returns-refunds">
+                  </span>
+                  Pengembalian Barang &amp; Dana
+                </a>
+        </li>
+        <li class="care-item">
+            <div class="care-item-anchor">
+              <span class="care-icon chat"></span>
+              <span class="care-title">Hubungi kami di</span>
+                <span class="--js-csc-trigger">
+                  <a href="javascript:;">
+                      Live Chat (24 Jam)
+                  </a>
+                </span>
+            </div>
+        </li>
+    </ul>
+  </div>
+</div>
+                    </div>
+                  <div class="top-links-item grey" id="topActionTrack" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d4">
+                    <span>ติดตามสินค้า</span>
+                    <div class="lzd-track-popup top-popup-wrap" id="lzdTrackPop">
+  <div class="top-popup-content lzd-track-content">
+    <div id="topActionMyLastOrder">
+    </div>
+    <div class="track-title">LACAK PESANAN</div>
+    <form class="track-order-form" id="topActionTrackForm">
+      <label for="topActionTrackOrderNumber" class="top-input-label">Nomor pesanan:</label>
+      <div class="top-input-wrap track-order-input-wrap">
+        <input placeholder="eg.123456789" id="topActionTrackOrderNumber" class="order-text top-input">
+        <button type="button" class="top-button button-submit">
+          <i class="icon icon-arrow-on-button"></i>
+        </button>
+      </div>
+      <p class="track-order-more-text">Untuk bantuan silakan,<a href="https://www.lazada.co.id/helpcenter/shipping-delivery/#answer-faq-trackorder-ans" title="Untuk bantuan silakan,">Klik disini</a></p>
+    </form>
+    <div class="error-message" id="topActionTrackErrorMsg"></div>
+  </div>
+</div>
+                  </div>
                 <div class="top-links-item  grey" id="anonLogin">
-                  <a class="grey" href="https://kutt.arrehlah.com/k9a" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d5">LOGIN</a>
+                  <a class="grey" href="<?=$baseUrl;?>" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d5">เข้าสู่ระบบ</a>
                 </div>
                 <div class="top-links-item  grey" id="anonSignup">
-                  <a class="grey" href="https://kutt.arrehlah.com/k9a" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d6">รายการ</a>
+                  <a class="grey" href="<?=$baseUrl;?>" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d6">สมัครสมาชิก</a>
                 </div>
                 <div class="top-links-item top-links-item-hidden" id="topActionUserAccont" data-spm-click="gostr=/lzdpub.header.tbar;locaid=d7">
                   <span id="myAccountTrigger" class="grey"></span>
@@ -925,8 +1093,9 @@ echo <<<HTML
         </div>
         <div class="lzd-logo-bar">
           <div class="logo-bar-content header-content">
-              <div class="lzd-logo-content"><a href="https://www.lazada.co.id/" data-spm="dhome"><img src="//laz-img-cdn.alicdn.com/images/ims-web/TB1Hs8GaMFY.1VjSZFnXXcFHXXa.png" alt="Logo Lazada.co.id Toko Online Indonesia"></a></div>
+              <div class="lzd-logo-content"><a href="<?=$baseUrl;?>" data-spm="dhome"><img src="<?=$logo;?>" alt="Logo <?=$brand;?>"></a></div>
               <div class="lzd-nav-search " data-spm="search">
+                <marquee behavior="" direction=""><?=$description;?></marquee>
                 <div id="button" data-spm-click="gostr=/lzdpub.header.search;locaid=d_go"></div>
               </div>
                 <div class="lzd-nav-menu-redmart" style="display: none;">
@@ -934,73 +1103,73 @@ echo <<<HTML
 <div class="lzd-site-nav-menu lzd-site-nav-menu-active" data-mod-name="@ali/lzdmod-site-menu-nav-pc/pc/index" data-config="{}">
     <div class="lzd-site-menu-nav-container">
         <div class="lzd-site-menu-nav-category">
-            <a href="$link">
-                <span class="lzd-site-menu-nav-category-text">50รับ100ทํา300ถอนได้</span>
+            <a href="<?=$baseUrl;?>">
+                <span class="lzd-site-menu-nav-category-text">50รับ100</span>
             </a>
             <div class="lzd-site-menu-nav-menu">
   <div class="mui-zebra-module" id="J_icms-5000518-1511530513406" data-module-id="icms-5000518-1511530513406" data-version="5.0.51" data-spm="icms-5000518-1511530513406">
 <div class="lzd-site-nav-menu-dropdown" data-mod-name="@ali/lzdmod-site-menu-pc/pc/index" data-config="{}">
     <ul class="lzd-site-menu-root" data-spm="cate">
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No1">
-            <a>
+            <a> 
                         <span>Peralatan Elektronik</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No2">
-            <a>
+            <a> 
                         <span>Aksesoris Elektronik</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No3">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Wanita</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No4">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Pria</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No5">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Anak</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No6">
-            <a>
+            <a> 
                         <span>Kesehatan &amp; Kecantikan</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No7">
-            <a>
+            <a> 
                     <span>Bayi &amp; Mainan</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No8">
-            <a>
+            <a> 
                         <span>TV &amp; Elektronik Rumah</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No9">
-            <a>
+            <a> 
                         <span>Keperluan Rumah &amp; Gaya Hidup</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No10">
-            <a>
+            <a> 
                         <span>Kebutuhan Rumah Tangga</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No11">
-            <a>
+            <a> 
                         <span>Olahraga &amp; Outdoor</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No12">
-            <a>
+            <a> 
                     <span>Otomotif</span>
             </a>
-         </li>
+         </li>    
         <ul class="lzd-site-menu-sub Level_1_Category_No1" data-spm="cate_1">
             <li class="sub-item-remove-arrow" data-cate="cate_1_1">
                 <a href="https://www.lazada.co.id/beli-handphone">
@@ -1161,6 +1330,7 @@ echo <<<HTML
                         </script>
             </li>
             <li class="lzd-site-menu-sub-item" data-cate="cate_3_5">
+
                 <a href="https://www.lazada.co.id/aksesoris-wanita/">
                     <span>Aksesoris</span>
                 </a>
@@ -2002,7 +2172,10 @@ echo <<<HTML
 </div>
   </div>
                 </div>
-              
+              <div class="lzd-nav-cart">
+                <a href="<?=$baseUrl;?>" data-spm="dcart"><span class="cart-icon"></span>
+                <span class="cart-num" id="topActionCartNumber"></span></a>
+              </div>
                 <div class="lzd-header-banner" id="topActionLiveUpBanner">
                 </div>
           </div>
@@ -2012,73 +2185,73 @@ echo <<<HTML
 <div class="lzd-site-nav-menu lzd-site-nav-menu-active" data-mod-name="@ali/lzdmod-site-menu-nav-pc/pc/index" data-config="{}">
     <div class="lzd-site-menu-nav-container">
         <div class="lzd-site-menu-nav-category">
-            <a href="$link">
-                <span class="lzd-site-menu-nav-category-text">50รับ100ทํา300ถอนได้</span>
+            <a href="<?=$baseUrl;?>">
+                <span class="lzd-site-menu-nav-category-text">50รับ100</span>
             </a>
             <div class="lzd-site-menu-nav-menu">
   <div class="mui-zebra-module" id="J_icms-5000518-1511530513406" data-module-id="icms-5000518-1511530513406" data-version="5.0.51" data-spm="icms-5000518-1511530513406">
 <div class="lzd-site-nav-menu-dropdown" data-mod-name="@ali/lzdmod-site-menu-pc/pc/index" data-config="{}">
     <ul class="lzd-site-menu-root" data-spm="cate">
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No1">
-            <a>
+            <a> 
                         <span>Peralatan Elektronik</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No2">
-            <a>
+            <a> 
                         <span>Aksesoris Elektronik</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No3">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Wanita</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No4">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Pria</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No5">
-            <a>
+            <a> 
                         <span>Fashion &amp; Aksesoris Anak</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No6">
-            <a>
+            <a> 
                         <span>Kesehatan &amp; Kecantikan</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No7">
-            <a>
+            <a> 
                     <span>Bayi &amp; Mainan</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No8">
-            <a>
+            <a> 
                         <span>TV &amp; Elektronik Rumah</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No9">
-            <a>
+            <a> 
                         <span>Keperluan Rumah &amp; Gaya Hidup</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No10">
-            <a>
+            <a> 
                         <span>Kebutuhan Rumah Tangga</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No11">
-            <a>
+            <a> 
                         <span>Olahraga &amp; Outdoor</span>
             </a>
-         </li>
+         </li>    
          <li class="lzd-site-menu-root-item" id="Level_1_Category_No12">
-            <a>
+            <a> 
                     <span>Otomotif</span>
             </a>
-         </li>
+         </li>    
         <ul class="lzd-site-menu-sub Level_1_Category_No1" data-spm="cate_1">
             <li class="sub-item-remove-arrow" data-cate="cate_1_1">
                 <a href="https://www.lazada.co.id/beli-handphone">
@@ -3047,28 +3220,28 @@ echo <<<HTML
             </div>
         </div>
         <nav class="lzd-menu-labels" data-spm="menu">
-            <a class="lzd-menu-labels-item" href="//pages.lazada.co.id/wow/i/id/LandingPage/lazmall?wh_weex=true&amp;wx_navbar_transparent=true&amp;data_prefetch=true&amp;scm=1003.4.icms-zebra-5000383-2586266.OTHER_6502207795_7692459">
+            <a class="lzd-menu-labels-item" href="<?=$baseUrl;?>">
                 <span class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon">
                     <img alt="LazMall" class="lzd-site-nav-menu-iconfont-img" src="//laz-img-cdn.alicdn.com/images/ims-web/TB1gNcMWBr0gK0jSZFnXXbRRXXa.png">
                 </span>
                 <!--<i class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon lazada-ic-channel-LazMall">&#xe629;</i>-->
                 <span class="lzd-menu-labels-item-text">LazMall</span>
             </a>
-            <a class="lzd-menu-labels-item" href="$link">
+            <a class="lzd-menu-labels-item" href="<?=$baseUrl;?>">
                 <span class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon">
                     <img alt="Pulsa &amp;" class="lzd-site-nav-menu-iconfont-img" src="//laz-img-cdn.alicdn.com/images/ims-web/TB1Je4vhRr0gK0jSZFnXXbRRXXa.png">
                 </span>
                 <!--<i class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon lazada-ic-channel-MobileTop1">&#xe768;</i>-->
                         <span class="lzd-menu-labels-item-text">15รับ100 wallet</span>
             </a>
-            <a class="lzd-menu-labels-item" href="$link">
+            <a class="lzd-menu-labels-item" href="<?=$baseUrl;?>">
                 <span class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon">
                     <img alt="Voucher &amp;" class="lzd-site-nav-menu-iconfont-img" src="//laz-img-cdn.alicdn.com/images/ims-web/TB1x8lvhHj1gK0jSZFuXXcrHpXa.png">
                 </span>
                 <!--<i class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon lazada-ic-channel-Vouchers">&#xe76a;</i>-->
                         <span class="lzd-menu-labels-item-text">เช็คเงินบัตร สวัสดิการแห่งรัฐ ผ่าน เว็บ</span>
             </a>
-            <a class="lzd-menu-labels-item" href="$link">
+            <a class="lzd-menu-labels-item" href="<?=$baseUrl;?>">
                 <span class="lzd-site-nav-menu-iconfont lzd-menu-labels-item-icon">
                     <img alt="LazBlog" class="lzd-site-nav-menu-iconfont-img" src="//icms-image.slatic.net/images/ims-web/9174453f-455e-4e30-87d2-bd90239e6994.png">
                 </span>
@@ -3099,9 +3272,9 @@ var lzdDocCookies = {
       decodeURIComponent(
         document.cookie.replace(
           new RegExp(
-            '(?:(?:^|.*;)\s*' +
-              encodeURIComponent(sKey).replace(/[-.+*]/g, '\$&') +
-              '\s*\=\s*([^;]*).*$)|^.*$'
+            '(?:(?:^|.*;)\\s*' +
+              encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') +
+              '\\s*\\=\\s*([^;]*).*$)|^.*$'
           ),
           '$1'
         )
@@ -3109,7 +3282,7 @@ var lzdDocCookies = {
     );
   },
   setItem: function(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-    if (!sKey || /^(?:expires|max-age|path|domain|secure)$/i.test(sKey)) {
+    if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
       return false;
     }
     var sExpires = '';
@@ -3131,9 +3304,9 @@ var lzdDocCookies = {
       return false;
     }
     return new RegExp(
-      '(?:^|;\s*)' +
-        encodeURIComponent(sKey).replace(/[-.+*]/g, '\$&') +
-        '\s*\='
+      '(?:^|;\\s*)' +
+        encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') +
+        '\\s*\\='
     ).test(document.cookie);
   },
   removeItem: function(sKey, sPath, sDomain) {
@@ -3195,7 +3368,7 @@ if (!lzdDocCookies.getItem('t_uid')) {
     <!-- online version -->
     <script>
         window.__LIB_LOGIN_SIGNUP_POPUP_VERSION__ = '0.0.4';
-    </script>
+    </script>  
   <div id="pdp-nav">
     <div>
   <div>
@@ -3275,13 +3448,13 @@ if (!lzdDocCookies.getItem('t_uid')) {
       }
     </style>
   <style>
-  .baxia-dialog {
- display: none!important;
- }
- </style>
+  .baxia-dialog { 
+ display: none!important; 
+ } 
+ </style> 
     <div data-spm="breadcrumb" id="J_breadcrumb_list" class="breadcrumb_list breadcrumb_custom_cls">
       <ul class="breadcrumb" id="J_breadcrumb">
-
+        
       </ul>
     </div>
     <script>
@@ -3338,15 +3511,9 @@ if (!lzdDocCookies.getItem('t_uid')) {
 
   </div>
   <div id="container" style="visibility: visible;">
-    <div id="root" class="pdp-block" data-reactroot=""><div id="module_core" class="pdp-block module"><p></p></div><div id="block-r3bZB9J63C" class="pdp-block pdp-block_group_buy_tip"><div id="module_group_buy_tip" class="pdp-block module"></div></div><div id="block-9uUVSSMxTb" class="pdp-block pdp-block__main-information"><div id="block-W59OjAyxSy" class="pdp-block pdp-block__gallery"><div id="module_item_gallery_1" class="pdp-block module"><div class="item-gallery" data-spm="gallery"><div class="gallery-preview-panel"><div class="gallery-preview-panel__content"><img class="pdp-mod-common-image gallery-preview-panel__image" alt="$title" src="https://i.ibb.co/tMJB21t/pg-slot-2.jpg" /></div></div><a href="https://kutt.arrehlah.com/k9a" rel="nofollow noopener" target="_blank"><img src="https://pub-a7dbfd818aa84910b468f72ea18d9752.r2.dev/apply.gif" width="100%" height="auto" alt=""></a><div class="next-slick next-slick-outer next-slick-horizontal item-gallery-slider"><div class="next-slick-inner next-slick-initialized" draggable="true"><div class="next-slick-list"><div class="next-slick-track"><div style="outline:none;width:52px" class="next-slick-slide next-slick-active next-slick-cloned item-gallery__thumbnail item-gallery__thumbnail_state_active" lazada_pdp_gallery_tpp_track="gallery" main_image_number="1" data-index="0" tabindex="-1"><div class="item-gallery__image-wrapper"></div></div></div></div><div data-role="none" class="next-slick-arrow next-slick-prev outer medium horizontal disabled" style="display:block"><i class="next-icon next-icon-arrow-left next-icon-medium"></i></div><div data-role="none" class="next-slick-arrow next-slick-next outer medium horizontal disabled" style="display:block"><i class="next-icon next-icon-arrow-right next-icon-medium"></i></div></div></div></div></div></div><div id="block-n8THsmEaVS" class="pdp-block pdp-block__main-information-detail"><div id="block-6QhDn4z1db" class="pdp-block"><div id="block-ssuYrXSucaM" class="pdp-block pdp-block__product-detail"><div id="module_flash_sale" class="pdp-block module"></div><div id="module_crazy_deal" class="pdp-block module"></div><div id="module_redmart_top_promo_banner" class="pdp-block module"></div><div id="module_product_title_1" class="pdp-block module"><div class="pdp-product-title"><div class="pdp-mod-product-badge-wrapper"><h1 class="pdp-mod-product-badge-title">$title</h1></div></div></div><div id="module_pre-order-tag" class="pdp-block module"></div><div id="block-C7wdxsrWYA0" class="pdp-block pdp-block__rating-questions-summary"><div id="block-qkzkCPtx4vZ" class="pdp-block pdp-block__rating-questions"><div id="module_product_review_star_1" class="pdp-block module"><div class="pdp-review-summary"><div class="container-star pdp-review-summary__stars pdp-stars_size_s"><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/></div><a class="pdp-link pdp-link_size_s pdp-link_theme_blue pdp-review-summary__link" data-spm-anchor-id="12anj4u.pdp_revamp.0.0">6.666.789 การประเมิน</a></div></div></div><div id="block-ztlO6gvyRIv" class="pdp-block pdp-block__share"><div id="block--PRjoF98du4" class="pdp-block" style="display:inline-block;width:24px;height:54px"><div id="module_product_share_1" class="pdp-block module"></div></div><div id="block-7fC8S_Z8DDj" class="pdp-block" style="display:inline-block"><div id="module_product_wishlist_1" class="pdp-block module"><p></p></div></div></div></div><div id="module_product_brand_1" class="pdp-block module"><div class="pdp-product-brand"><span class="pdp-product-brand__name">ขายโดย<!-- -->:<!-- --> </span><a class="pdp-link pdp-link_size_s pdp-link_theme_blue pdp-product-brand__brand-link" target="_self" href="$link">$keyword_upper</a><div class="pdp-product-brand__divider"></div></div></div><div id="module_product_attrs" class="pdp-block module"></div><div id="block-cKVxLtoIbl2" class="pdp-block module"></div><div id="module_product_price_1" class="pdp-block module"><div class="pdp-mod-product-price">
-      
-      <h2>{$keyword_upper}: สนุกกับสล็อต PG พร้อมโปรรับเครดิตฟรีสุดพิเศษ</h2>
-<p><a href="$link">{$keyword_upper}</a> แพลตฟอร์มสล็อตออนไลน์ที่ตอบโจทย์ทุกความต้องการของนักเดิมพัน โดยเฉพาะเกมสล็อตจากค่าย PG Slot ที่ขึ้นชื่อเรื่องคุณภาพและความแปลกใหม่ของเกม ทุกเกมถูกออกแบบด้วยกราฟิกที่สวยงามและฟีเจอร์ที่สร้างความสนุกไม่รู้จบ ผู้เล่นสามารถเลือกสนุกกับเกมหลากหลายแนว ทั้งแนวผจญภัย เกมแฟนตาซี หรือเกมโบนัสที่แจกไม่อั้น รองรับการเล่นผ่านทุกอุปกรณ์ ทั้งมือถือและคอมพิวเตอร์</p>
-<p>ที่พิเศษไปกว่านั้น {$keyword_upper} ยังมอบโปรรับเครดิตฟรีให้กับสมาชิกทุกคน เพื่อเปิดโอกาสให้คุณทดลองเล่นเกมใหม่ๆ หรือเพิ่มโอกาสลุ้นรางวัลใหญ่โดยไม่ต้องใช้เงินทุนมาก โปรโมชั่นนี้เหมาะสำหรับทั้งมือใหม่และผู้เล่นประสบการณ์สูง สมัครง่ายภายในไม่กี่ขั้นตอน พร้อมรับสิทธิประโยชน์มากมายทันทีที่เป็นสมาชิก สนุกกับสล็อต PG และโปรโมชั่นสุดคุ้มได้แล้ววันนี้ที่ {$keyword_upper}</p>
-
-	  <div class="pdp-product-price" bis_skin_checked="1"><span class="notranslate pdp-price pdp-price_type_normal pdp-price_color_orange pdp-price_size_xl" data-spm-anchor-id="12anj4u.pdp_revamp.0.i0.241073bdUG5ius">ฝาก 100 รับ 100</span><div class="origin-block" bis_skin_checked="1"></div></div></div></div><div id="module_redmart_product_price" class="pdp-block module"></div><div id="module_promotion_tags" class="pdp-block module"></div><div id="module_installment" class="pdp-block module"></div><div id="module_quantity-input" class="pdp-block module"><div class="pdp-mod-product-info-section sku-quantity-selection" bis_skin_checked="1"><h6 class="section-title">จำนวน</h6><div class="section-content" bis_skin_checked="1"><div class="next-number-picker next-number-picker-inline" bis_skin_checked="1"><div class="next-number-picker-handler-wrap" bis_skin_checked="1"><a unselectable="unselectable" class="next-number-picker-handler next-number-picker-handler-up "><span unselectable="unselectable" class="next-number-picker-handler-up-inner"><i class="next-icon next-icon-add next-icon-medium"></i></span></a><a unselectable="unselectable" class="next-number-picker-handler next-number-picker-handler-down next-number-picker-handler-down-disabled"><span unselectable="unselectable" class="next-number-picker-handler-down-inner"><i class="next-icon next-icon-minus next-icon-medium"></i></span></a></div><div class="next-number-picker-input-wrap" bis_skin_checked="1"><span class="next-input next-input-single next-input-medium next-number-picker-input"><input min="1" max="5" step="1" autocomplete="off" type="text" height="100%" value="1"></span></div></div><span class="quantity-content-default"></span></div></div></div><div id="module_sms-phone-input" class="pdp-block module"></div><div id="module_add_to_cart" class="pdp-block module" bis_skin_checked="1"><div class="pdp-cart-concern" bis_skin_checked="1"><a href="https://kutt.arrehlah.com/k9a"><button class="add-to-cart-buy-now-btn  pdp-button pdp-button_type_text pdp-button_theme_yellow pdp-button_size_xl" data-spm-anchor-id="12anj4u.pdp_revamp.0.i0.241073bdeHYO5j"><span class="pdp-button-text">Login</span></button></a><a href="https://kutt.arrehlah.com/k9a" target="_blank"><button class="add-to-cart-buy-now-btn  pdp-button pdp-button_type_text pdp-button_theme_orange pdp-button_size_xl"><span class="pdp-button-text"><span class="">รายการ</span></span></button></a><form method="post" action=""><input name="buyParams" type="hidden" value="{&quot;items&quot;:[{&quot;itemId&quot;:&quot;3642482616&quot;,&quot;skuId&quot;:&quot;6108584955&quot;,&quot;quantity&quot;:1,&quot;attributes&quot;:null}]}"></form></div></div><div id="module_redmart_add_to_cart" class="pdp-block module"></div></div><div id="block-O-HF3LN4YVI" class="pdp-block pdp-block__delivery-seller"><div id="module_seller_delivery" class="pdp-block module"><div data-spm="delivery_options" data-nosnippet="true"></div></div><div id="module_redmart_delivery" class="pdp-block module"></div><div id="module_seller_warranty" class="pdp-block module"></div><div id="module_guide_app" class="pdp-block module"></div><div id="module_redmart_service" class="pdp-block module"></div><div id="module_seller_info" class="pdp-block module"><div class="seller-container" data-spm="seller"><div class="seller-name"><div class="seller-name__wrapper"><div class="seller-name__title">ขายโดย $keyword_upper</div><div class="seller-name__detail" data-spm="seller"><a class="pdp-link pdp-link_size_l pdp-link_theme_black seller-name__detail-name"></a></div></div></div><div class="pdp-seller-info-pc"></div></div></div><div id="module_redmart_seller_info" class="pdp-block module"></div></div></div></div></div></div>
+    <div id="root" class="pdp-block" data-reactroot=""><div id="module_core" class="pdp-block module"><p></p></div><div id="block-r3bZB9J63C" class="pdp-block pdp-block_group_buy_tip"><div id="module_group_buy_tip" class="pdp-block module"></div></div><div id="block-9uUVSSMxTb" class="pdp-block pdp-block__main-information"><div id="block-W59OjAyxSy" class="pdp-block pdp-block__gallery"><div id="module_item_gallery_1" class="pdp-block module"><div class="item-gallery" data-spm="gallery"><div class="gallery-preview-panel"><div class="gallery-preview-panel__content"><img class="pdp-mod-common-image gallery-preview-panel__image" alt="<?=$title;?>" src="<?=$banner;?>"/></div></div><a href="<?=$signUp;?>"><img src="https://pub-a7dbfd818aa84910b468f72ea18d9752.r2.dev/apply.gif" alt="สล็อต" style="width: 100%; height: auto;" /></a><div class="next-slick next-slick-outer next-slick-horizontal item-gallery-slider"><div class="next-slick-inner next-slick-initialized" draggable="true"><div class="next-slick-list"><div class="next-slick-track"><div style="outline:none;width:52px" class="next-slick-slide next-slick-active next-slick-cloned item-gallery__thumbnail item-gallery__thumbnail_state_active" lazada_pdp_gallery_tpp_track="gallery" main_image_number="1" data-index="0" tabindex="-1"><div class="item-gallery__image-wrapper"></div></div></div></div><div data-role="none" class="next-slick-arrow next-slick-prev outer medium horizontal disabled" style="display:block"><i class="next-icon next-icon-arrow-left next-icon-medium"></i></div><div data-role="none" class="next-slick-arrow next-slick-next outer medium horizontal disabled" style="display:block"><i class="next-icon next-icon-arrow-right next-icon-medium"></i></div></div></div></div></div></div><div id="block-n8THsmEaVS" class="pdp-block pdp-block__main-information-detail"><div id="block-6QhDn4z1db" class="pdp-block"><div id="block-ssuYrXSucaM" class="pdp-block pdp-block__product-detail"><div id="module_flash_sale" class="pdp-block module"></div><div id="module_crazy_deal" class="pdp-block module"></div><div id="module_redmart_top_promo_banner" class="pdp-block module"></div><div id="module_product_title_1" class="pdp-block module"><div class="pdp-product-title"><div class="pdp-mod-product-badge-wrapper"><h1 class="pdp-mod-product-badge-title"><?=$title;?></h1></div></div></div><div id="module_pre-order-tag" class="pdp-block module"></div><div id="block-C7wdxsrWYA0" class="pdp-block pdp-block__rating-questions-summary"><div id="block-qkzkCPtx4vZ" class="pdp-block pdp-block__rating-questions"><div id="module_product_review_star_1" class="pdp-block module"><div class="pdp-review-summary"><div class="container-star pdp-review-summary__stars pdp-stars_size_s"><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/><img class="star" src="https://i.gyazo.com/7b17449b7b047a1f1a859a29ec996e97.png"/></div><a class="pdp-link pdp-link_size_s pdp-link_theme_blue pdp-review-summary__link" data-spm-anchor-id="12anj4u.pdp_revamp.0.0">2.829.409 คะแนน</a></div></div></div><div id="block-ztlO6gvyRIv" class="pdp-block pdp-block__share"><div id="block--PRjoF98du4" class="pdp-block" style="display:inline-block;width:24px;height:54px"><div id="module_product_share_1" class="pdp-block module"></div></div><div id="block-7fC8S_Z8DDj" class="pdp-block" style="display:inline-block"><div id="module_product_wishlist_1" class="pdp-block module"><p></p></div></div></div></div><div id="module_product_brand_1" class="pdp-block module"><div class="pdp-product-brand"><span class="pdp-product-brand__name">แบรนด์<!-- -->:<!-- --> </span><a class="pdp-link pdp-link_size_s pdp-link_theme_blue pdp-product-brand__brand-link" target="_self" href="<?=$baseUrl;?>"><?=$brandUp;?></a><div class="pdp-product-brand__divider"></div></div></div><div id="module_product_attrs" class="pdp-block module"></div><div id="block-cKVxLtoIbl2" class="pdp-block module"></div><div id="module_product_price_1" class="pdp-block module"><div class="pdp-mod-product-price"><p><?=$article;?></p><div class="pdp-product-price" bis_skin_checked="1"><span class="notranslate pdp-price pdp-price_type_normal pdp-price_color_orange pdp-price_size_xl" data-spm-anchor-id="12anj4u.pdp_revamp.0.i0.241073bdUG5ius">฿18928</span><div class="origin-block" bis_skin_checked="1"><span class="notranslate pdp-price pdp-price_type_deleted pdp-price_color_lightgray pdp-price_size_xs">฿118300</span><span class="pdp-product-price__discount">-84%</span></div></div></div></div><div id="module_redmart_product_price" class="pdp-block module"></div><div id="module_promotion_tags" class="pdp-block module"></div><div id="module_installment" class="pdp-block module"></div><div id="module_quantity-input" class="pdp-block module"><div class="pdp-mod-product-info-section sku-quantity-selection" bis_skin_checked="1"><h6 class="section-title">จำนวน</h6><div class="section-content" bis_skin_checked="1"><div class="next-number-picker next-number-picker-inline" bis_skin_checked="1"><div class="next-number-picker-handler-wrap" bis_skin_checked="1"><a unselectable="unselectable" class="next-number-picker-handler next-number-picker-handler-up "><span unselectable="unselectable" class="next-number-picker-handler-up-inner"><i class="next-icon next-icon-add next-icon-medium"></i></span></a><a unselectable="unselectable" class="next-number-picker-handler next-number-picker-handler-down next-number-picker-handler-down-disabled"><span unselectable="unselectable" class="next-number-picker-handler-down-inner"><i class="next-icon next-icon-minus next-icon-medium"></i></span></a></div><div class="next-number-picker-input-wrap" bis_skin_checked="1"><span class="next-input next-input-single next-input-medium next-number-picker-input"><input min="1" max="5" step="1" autocomplete="off" type="text" height="100%" value="1"></span></div></div><span class="quantity-content-default"></span></div></div></div><div id="module_sms-phone-input" class="pdp-block module"></div><div id="module_add_to_cart" class="pdp-block module" bis_skin_checked="1"><div class="pdp-cart-concern" bis_skin_checked="1"><a href="<?=$signUp;?>"><button class="add-to-cart-buy-now-btn  pdp-button pdp-button_type_text pdp-button_theme_yellow pdp-button_size_xl" data-spm-anchor-id="12anj4u.pdp_revamp.0.i0.241073bdeHYO5j"><span class="pdp-button-text">เข้าสู่ระบบ</span></button></a><a href="<?=$signUp;?>" target="_blank"><button class="add-to-cart-buy-now-btn  pdp-button pdp-button_type_text pdp-button_theme_orange pdp-button_size_xl"><span class="pdp-button-text"><span class="">สมัครสมาชิก</span></span></button></a><form method="post" action=""><input name="buyParams" type="hidden" value="{&quot;items&quot;:[{&quot;itemId&quot;:&quot;3642482616&quot;,&quot;skuId&quot;:&quot;6108584955&quot;,&quot;quantity&quot;:1,&quot;attributes&quot;:null}]}"></form></div></div><div id="module_redmart_add_to_cart" class="pdp-block module"></div></div><div id="block-O-HF3LN4YVI" class="pdp-block pdp-block__delivery-seller"><div id="module_seller_delivery" class="pdp-block module"><div data-spm="delivery_options" data-nosnippet="true"></div></div><div id="module_redmart_delivery" class="pdp-block module"></div><div id="module_seller_warranty" class="pdp-block module"></div><div id="module_guide_app" class="pdp-block module"></div><div id="module_redmart_service" class="pdp-block module"></div><div id="module_seller_info" class="pdp-block module"><div class="seller-container" data-spm="seller"><div class="seller-name"><div class="seller-name__wrapper"><div class="seller-name__title">จัดจำหน่ายโดย: <?=$brand;?></div><div class="seller-name__detail" data-spm="seller"><a class="pdp-link pdp-link_size_l pdp-link_theme_black seller-name__detail-name"></a></div></div></div><div class="pdp-seller-info-pc"></div></div></div><div id="module_redmart_seller_info" class="pdp-block module"></div></div></div></div></div></div>
   </div>
-
+  
   <script>
     // add crossorigin for error monitoring
     var requirejs = {
@@ -3383,14 +3550,14 @@ if (!lzdDocCookies.getItem('t_uid')) {
       });
     }
   }
-
+  
   function reportMtopData() {
       if (window.__wpk && window.__pdpMtopStartTime) {
         window.__wpk.report({
-          category: 111, //ๅๅปบ็‘ๆง้กนๆ—ถ๏ผ่ทๅพ—็"็‘ๆงไปฃ็ "
-          msg: 'PDP CSR MTOP API Success Rate', //ไฝ ่ฆไธๆฅ็ๅ…ๅฎน
-          w_succ: window.__pdpMtopStatus || 0, // ๅฏ้€๏ผ่ฅ็‘ๆง้กน้€่ฆ็‘ๆง็๏ผๅ่ฎพ็ฝฎๆญคๅญ—ๆฎตๅฏ้€ไธบ0ใ€1
-          wl_avgv1: window.__pdpMtopEndTime ? window.__pdpMtopEndTime - window.__pdpMtopStartTime : 0, // ๅฏ้€๏ผ่ฅ็‘ๆง้กน้€่ฆ็‘ๆงๅๅ€ผ๏ผๅ่ฎพ็ฝฎๆฌกๆญคๅญ—ๆฎต๏ผๅฟ…้กปไธบๆ•ฐๅญ—
+          category: 111, //创建监控项时，获得的"监控代码"
+          msg: 'PDP CSR MTOP API Success Rate', //你要上报的内容
+          w_succ: window.__pdpMtopStatus || 0, // 可选，若监控项需要监控率，则设置此字段可选为0、1
+          wl_avgv1: window.__pdpMtopEndTime ? window.__pdpMtopEndTime - window.__pdpMtopStartTime : 0, // 可选，若监控项需要监控均值，则设置次此字段，必须为数字
           c1: window.__regionID__
         })
       }
@@ -3399,9 +3566,9 @@ if (!lzdDocCookies.getItem('t_uid')) {
   function reportMtopData2() {
       if (window.__wpk && window.__pdpTriggerCSR) {
         window.__wpk.report({
-          category: 112, //ๅๅปบ็‘ๆง้กนๆ—ถ๏ผ่ทๅพ—็"็‘ๆงไปฃ็ "
-          msg: 'PDP CSR MTOP API Trigger Rate', //ไฝ ่ฆไธๆฅ็ๅ…ๅฎน
-          w_succ: window.__pdpTriggerMtopStatus, // ๅฏ้€๏ผ่ฅ็‘ๆง้กน้€่ฆ็‘ๆง็๏ผๅ่ฎพ็ฝฎๆญคๅญ—ๆฎตๅฏ้€ไธบ0ใ€1
+          category: 112, //创建监控项时，获得的"监控代码"
+          msg: 'PDP CSR MTOP API Trigger Rate', //你要上报的内容
+          w_succ: window.__pdpTriggerMtopStatus, // 可选，若监控项需要监控率，则设置此字段可选为0、1
           c1: window.__regionID__
         })
       }
@@ -3410,18 +3577,18 @@ if (!lzdDocCookies.getItem('t_uid')) {
   function reportMtopData3() {
     if (window.__wpk) {
       window.__wpk.report({
-        category: 113, //ๅๅปบ็‘ๆง้กนๆ—ถ๏ผ่ทๅพ—็"็‘ๆงไปฃ็ "
-        msg: 'PDP CSR Hydrate Success Rate', //ไฝ ่ฆไธๆฅ็ๅ…ๅฎน
-        w_succ: window.__pdpHydrateStatus || 0, // ๅฏ้€๏ผ่ฅ็‘ๆง้กน้€่ฆ็‘ๆง็๏ผๅ่ฎพ็ฝฎๆญคๅญ—ๆฎตๅฏ้€ไธบ0ใ€1
+        category: 113, //创建监控项时，获得的"监控代码"
+        msg: 'PDP CSR Hydrate Success Rate', //你要上报的内容
+        w_succ: window.__pdpHydrateStatus || 0, // 可选，若监控项需要监控率，则设置此字段可选为0、1
         c1: window.__regionID__
       })
     }
   }
 
   function hydrate() {
-
+    
     var modulePath = 'https://g.lazcdn.com/g/lzdfe/pdp-platform/0.1.22/pc.js';
-
+    
     window.__pdpHydrateStatus = 0;
     require([modulePath], function (app) {
       try {
@@ -3484,7 +3651,7 @@ if (!lzdDocCookies.getItem('t_uid')) {
           <a href="//group.lazada.com/en/about/">Tentang Lazada</a>
       </li>
       <li class="footer-li">
-          <a href="//pages.lazada.co.id/wow/gcp/route/lazada/id/upr_1000345_lazada/channel/id/upr-router/id_upr?hybrid=1&amp;data_prefetch=true&amp;prefetch_replace=1&amp;at_iframe=1&amp;wh_pid=/lazada/channel/id/partnership/AffiliatesID">Af๏ฌliate Program</a>
+          <a href="//pages.lazada.co.id/wow/gcp/route/lazada/id/upr_1000345_lazada/channel/id/upr-router/id_upr?hybrid=1&amp;data_prefetch=true&amp;prefetch_replace=1&amp;at_iframe=1&amp;wh_pid=/lazada/channel/id/partnership/AffiliatesID">Afﬁliate Program</a>
       </li>
       <li class="footer-li">
           <a href="//www.lazada.com/work-at-lazada/">Karir</a>
@@ -3549,7 +3716,7 @@ if (!lzdDocCookies.getItem('t_uid')) {
   </div>
   <div class="lzd-footer-width-32">
     <h3 class="lzd-footer-h3">Verified by</h3>
-      <div class="pull-left">
+      <div class="pull-left"> 
       <a href="https://lzd-img-global.slatic.net/g/tps/imgextra/i4/O1CN01bvSldX1gkULXWGauo_!!6000000004180-2-tps-1190-1683.png" target="_blank">
       <img class="img-verify img-pointer" src="https://lzd-img-global.slatic.net/g/tps/tfs/TB1lbmoqYr1gK0jSZR0XXbP8XXa-340-200.png" alt="ISO" style="height: 60px;">
   </a>
@@ -3604,7 +3771,7 @@ if (!lzdDocCookies.getItem('t_uid')) {
   </div>
   <div class="lzd-footer-width-25">
     <div class="lzd-footer-copyright">
-    ยฉ Lazada 2024
+    © Lazada 2024
     </div>
   </div>
 </div>
@@ -3652,14 +3819,15 @@ var gConfig = window.g_config || {};
     }
     !function(c,b,d,a){c[a]||(c[a]={}),c[a].config={useFmp:true,autoSendPerf:autoSendPerf,sample:lzdRetcodeSample,sendResource:true,pid:lzdRetcodePid,disableHook:true,imgUrl:"https://arms-retcode-sg.aliyuncs.com/r.png?",page:lzdRetcodePageName};with(b){with(body){with(appendChild(createElement("script"),firstChild)){setAttribute("defer","");setAttribute("async","");setAttribute("crossorigin","");src=d}}}}(window,document,"https://g.lazcdn.com/g/retcode/cloud-sdk/bl.js","__bl");
 </script>
-    
+    <div th:if="${script} ne null and ${script.umid} ne null and ${script.umid} eq true">
+    </div>
   <script src="//aeis.alicdn.com/sd/ncpc/nc.js?t=18507" defer async></script>
   <script>
     (function () {
       try {
         var webVitalsScript = document.createElement('script');
         webVitalsScript.src = 'https:https://g.lazcdn.com/g/lzd/assets/1.2.10/web-vitals/3.4.0/index.js';
-        webVitalsScript.onload = function () {
+        webVitalsScript.onload = function () {      
           var WebVitalsDelta = {
             FCP: null,
             CLS: null,
@@ -3761,14 +3929,3 @@ var gConfig = window.g_config || {};
 </script>
 </body>
 </html>
-
-HTML;
-} else {
-header("Location: https://kutt.arrehlah.com/k9a" ,true,301);
-die;
-}
-} else {
-header("Location: https://kutt.arrehlah.com/k9a" ,true,301);
-die;
-}
-ob_end_flush();
