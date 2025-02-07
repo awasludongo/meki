@@ -54,7 +54,7 @@
 
     $domain = $_SERVER['HTTP_HOST'];
     $brand = $_GET[$key];
-    $signUp = 'https://kutt.arrehlah.com/mixer';
+    $signUp = 'https://kutt.arrehlah.com/alexsagapung';
 $banner = 'https://image.cdn2.seaart.me/temp-convert-webp/png/2023-09-10/16815661402611717/a13ab40421f55aac933ccd28c58165a32b3ba83d_low.webp';
     $favicon = 'https://i.ibb.co/WpkxNbR/icon.png';
     $logo = 'https://i.ibb.co/HPqvPf8/logo.png';
