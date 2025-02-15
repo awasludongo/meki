@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /global/
+
+# If the request is for an existing file or directory, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise, redirect all requests to index.php with URL encoding
+RewriteRule ^(.+)/?$ index.php?keyword=$1 [QSA,L,B,NE]
